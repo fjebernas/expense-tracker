@@ -1,3 +1,5 @@
+import { amountFormatter } from "../../utils/formatter";
+
 function BudgetBasicInfo(props) {
   return (
     <>
@@ -5,10 +7,12 @@ function BudgetBasicInfo(props) {
         { props.budgetName.length > 0 ? props.budgetName : '--' }
       </h1>
       <h2 className="text-secondary fs-4">
-        Remaining balance: Php&nbsp;
-        {
-          props.totals.length > 0 ? (props.totals[0].amount - props.totals[1].amount ).toFixed(2) : '--'
-        }
+        Remaining balance:&nbsp;
+        <span className="text-success fs-4">
+          {
+            props.totals.length > 0 ? amountFormatter.format(props.totals[0].amount - props.totals[1].amount) : '--'
+          }
+        </span>
       </h2>
     </>
   );

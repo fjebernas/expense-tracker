@@ -1,7 +1,7 @@
 import randomColor from "randomcolor";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 
-function PieGraph(props) {
+function Chart(props) {
 
   const labels = props.transactions.map(transaction => transaction.description);
 
@@ -14,15 +14,15 @@ function PieGraph(props) {
         label: 'amount',
         data: amounts,
         borderWidth: 1,
-        backgroundColor: randomColor({ count: 500, luminosity: 'dark', alpha: '0.7' }),
-        borderColor: '#fff'
+        backgroundColor: randomColor({ count: 500, luminosity: 'light', alpha: '1' }),
+        borderColor: '#fff',
       },
     ],
   };
 
   return (
-    <Pie data={chartData} />
+    <Doughnut data={chartData} />
   );
 }
 
-export default PieGraph;
+export default Chart;

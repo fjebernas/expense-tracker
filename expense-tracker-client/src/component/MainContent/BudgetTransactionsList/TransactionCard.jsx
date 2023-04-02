@@ -1,10 +1,27 @@
-import { Alert } from "react-bootstrap";
+import { Alert, Col, Container, Row } from "react-bootstrap";
+import { amountFormatter } from "../../../utils/formatter";
 
 function TransactionCard(props) {
+
+  const getTheme = (category) => {
+    return category === 'income' ? 'success' :
+            category === 'expense' ? 'danger' :
+              'info';
+  }
+
   return (
-    <Alert variant="info" className="text-start text-info pt-4 px-4" style={{borderLeft: '3px solid #0dcaf0'}}>
-      <h5 className="fs-6 fw-bold text-uppercase">{props.description}</h5>
-      <p className="fs-4">Php {props.amount}</p>
+    <Alert variant={ getTheme(props.category) } className="text-start pt-4 px-4">
+      <Container>
+        <Row>
+          <Col>
+            <h5 className="fs-6 fw-bold text-uppercase">{props.transaction.description}</h5>
+            <p className="fs-4">{ amountFormatter.format(props.transaction.amount) }</p>
+          </Col>
+          <Col>
+            <p className="text-end">{ props.transaction.createdAt }</p>
+          </Col>
+        </Row>
+      </Container>
     </Alert>
   );
 }

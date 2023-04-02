@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Accordion, Container, ListGroup } from "react-bootstrap";
+import { Accordion, Button, ButtonGroup, Container, ListGroup, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { baseUrl } from "../../../data/data";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import CreateBudgetForm from "./CreateBudgetForm";
@@ -25,7 +25,7 @@ function BudgetList(props) {
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header>
-            <h3 className="fs-6 text-warning">Create new budget</h3>
+            <h3 className="fs-6 text-primary">Create new budget</h3>
           </Accordion.Header>
           <Accordion.Body>
             <CreateBudgetForm handleBudgetFormSubmit={handleBudgetFormSubmit} />
@@ -33,22 +33,21 @@ function BudgetList(props) {
         </Accordion.Item>
       </Accordion>
       <p className="text-muted my-3">ALL BUDGETS</p>
-      <ListGroup>
+      <ToggleButtonGroup vertical type="radio" name="options" className="w-100">
         {
           props.budgets.map(budget => (
-            <ListGroup.Item key={budget.id}>
-              <input type="radio" className="btn-check" name="options-outlined" id={budget.id} />
-              <label
-                onClick={() => handleClick(budget.name, budget.id)}
-                htmlFor={budget.id}
-                className="btn btn-outline-primary w-100"
-              >
-                {budget.name}
-              </label>
-            </ListGroup.Item>
+            <ToggleButton
+              id={budget.id + budget.name}
+              key={budget.id + budget.name}
+              value={budget.id}
+              onClick={() => handleClick(budget.name, budget.id)}
+              variant='outline-info'
+            >
+              {budget.name}
+            </ToggleButton>
           ))
         }
-      </ListGroup>
+      </ToggleButtonGroup>
     </Container>
   );
 }

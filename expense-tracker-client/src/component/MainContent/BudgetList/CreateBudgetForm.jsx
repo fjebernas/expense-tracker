@@ -22,7 +22,7 @@ function CreateBudgetForm(props) {
         <Form.Label>Budget name</Form.Label>
         <Form.Control onChange={handleInputChange} value={budgetName} type="text" placeholder="ex. budget for january" />
       </Form.Group>
-      <Button variant="warning" type="submit" className="w-100">
+      <Button variant="primary" type="submit" className="w-100">
         Submit
       </Button>
     </Form>

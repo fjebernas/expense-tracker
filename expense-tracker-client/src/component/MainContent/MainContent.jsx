@@ -7,7 +7,7 @@ import BudgetBasicInfo from "./BudgetBasicInfo";
 import BudgetList from "./BudgetList/BudgetList";
 import BudgetTransactionsList from "./BudgetTransactionsList/BudgetTransactionsList";
 import CreateTransactionForm from "./CreateTransactionForm/CreateTransactionForm";
-import PieGraphContainer from "./PieGraphContainer/PieGraphContainer";
+import ChartsContainer from "./PieGraphContainer/ChartsContainer";
 
 function MainContent() {
 
@@ -113,19 +113,19 @@ function MainContent() {
         <Col xxl={8} className='mb-5'>
           <BudgetBasicInfo budgetName={budgetName} totals={totals} />
           <Tabs
-            defaultActiveKey="profile"
+            fill
+            defaultActiveKey="charts"
             id="uncontrolled-tab-example"
             className="mt-5 mb-3"
-            fill
           >
-            <Tab eventKey="home" title="Pie Charts">
-              <PieGraphContainer
+            <Tab eventKey="charts" title="Pie Charts">
+              <ChartsContainer
                 totals={totals}
                 incomeTransactions={incomeTransactions}
                 expenseTransactions={expenseTransactions}
               />
             </Tab>
-            <Tab eventKey="profile" title="Transactions list">
+            <Tab eventKey="list" title="Transactions list">
               <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} />
             </Tab>
           </Tabs>

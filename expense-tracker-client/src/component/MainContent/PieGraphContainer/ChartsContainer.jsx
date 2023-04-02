@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
-import PieGraph from "./PieGraph";
+import Chart from "./Chart";
 
-function PieGraphContainer(props) {
+function ChartsContainer(props) {
 
   return (
     <>
@@ -10,19 +10,19 @@ function PieGraphContainer(props) {
           <Col xl={4} className='mb-3'>
             <h4>Total Income : Total Expense</h4>
             {
-              props.totals.length > 0 ? <PieGraph transactions={props.totals} /> : <p className="text-muted fst-italic">No data</p>
+              props.totals.length > 0 ? <Chart transactions={props.totals} /> : <p className="text-muted fst-italic">No data</p>
             }
           </Col>
           <Col xl={4} className='mb-3'>
             <h4>Incomes</h4>
             {
-              props.incomeTransactions.length > 0 ? <PieGraph transactions={props.incomeTransactions} /> : <p className="text-muted fst-italic">No data</p>
+              props.incomeTransactions.length > 0 ? <Chart transactions={props.incomeTransactions} /> : <p className="text-muted fst-italic">No data</p>
             }
           </Col>
           <Col xl={4} className='mb-3'>
             <h4>Expenses</h4>
             {
-              props.incomeTransactions.length > 0 ? <PieGraph transactions={props.expenseTransactions} /> : <p className="text-muted fst-italic">No data</p>
+              props.incomeTransactions.length > 0 ? <Chart transactions={props.expenseTransactions} /> : <p className="text-muted fst-italic">No data</p>
             }
           </Col>
         </Row>
@@ -31,4 +31,4 @@ function PieGraphContainer(props) {
   );
 }
 
-export default PieGraphContainer;
+export default ChartsContainer;
