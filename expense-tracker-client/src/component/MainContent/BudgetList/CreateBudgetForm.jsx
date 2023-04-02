@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 function CreateBudgetForm(props) {
 
@@ -18,10 +18,16 @@ function CreateBudgetForm(props) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3 text-start">
-        <Form.Label>Budget name</Form.Label>
-        <Form.Control onChange={handleInputChange} value={budgetName} type="text" placeholder="ex. budget for january" />
-      </Form.Group>
+      <FloatingLabel
+        label="Budget name"
+        controlId="floatingInput"
+        className="mb-3"
+      >
+        <Form.Control type="text" placeholder="ex. Budget for January" 
+          onChange={handleInputChange}
+          value={budgetName}
+        />
+      </FloatingLabel>
       <Button variant="primary" type="submit" className="w-100">
         Submit
       </Button>

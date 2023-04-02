@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../data/data";
 import { toastError, toastSuccess } from "../../utils/toast";
 import BudgetBasicInfo from "./BudgetBasicInfo";
-import BudgetList from "./BudgetList/BudgetList";
+import BudgetListAndCreateForm from "./BudgetList/BudgetListAndCreateForm";
 import BudgetTransactionsList from "./BudgetTransactionsList/BudgetTransactionsList";
 import CreateTransactionForm from "./CreateTransactionForm/CreateTransactionForm";
 import ChartsContainer from "./PieGraphContainer/ChartsContainer";
@@ -100,35 +100,68 @@ function MainContent() {
     }
   }
 
+  const handleDeleteBudgetClick = async () => {
+    await axios.delete(`${baseUrl}/budgets/${currentBudgetId}`)
+      .then(() => {
+        toastSuccess('Deleted budget');
+        getAllBudgets();
+        setIncomeTransactions([]);
+        setExpenseTransactions([]);
+        setTotals({});
+        setCurrentBudgetId(NaN);
+        setBudgetName('')
+      })
+      .catch(err => toastError(err.message));
+  }
+
   return (
     <Container fluid className='my-5 px-5'>
       <Row>
         <Col xxl={2} className='mb-5'>
-          <BudgetList
+          <BudgetListAndCreateForm
             budgets={budgets}
             handleBudgetClick={handleBudgetClick}
             getAllBudgets={getAllBudgets}
           />
         </Col>
         <Col xxl={8} className='mb-5'>
-          <BudgetBasicInfo budgetName={budgetName} totals={totals} />
-          <Tabs
-            fill
-            defaultActiveKey="charts"
-            id="uncontrolled-tab-example"
-            className="mt-5 mb-3"
-          >
-            <Tab eventKey="charts" title="Pie Charts">
-              <ChartsContainer
-                totals={totals}
-                incomeTransactions={incomeTransactions}
-                expenseTransactions={expenseTransactions}
-              />
-            </Tab>
-            <Tab eventKey="list" title="Transactions list">
-              <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} />
-            </Tab>
-          </Tabs>
+          <Container fluid>
+            <Row>
+              <Col md={{ span: 8, offset: 2 }}>
+                <BudgetBasicInfo budgetName={budgetName} totals={totals} />
+              </Col>
+              <Col md={{ span: 2 }} className='d-flex align-items-center'>
+                <Button
+                  disabled={isNaN(currentBudgetId)}
+                  onClick={handleDeleteBudgetClick}
+                  variant="danger"
+                >
+                  Delete budget
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Tabs
+                  fill
+                  defaultActiveKey="charts"
+                  id="uncontrolled-tab-example"
+                  className="mt-5 mb-3"
+                >
+                  <Tab eventKey="charts" title="Pie Charts">
+                    <ChartsContainer
+                      totals={totals}
+                      incomeTransactions={incomeTransactions}
+                      expenseTransactions={expenseTransactions}
+                    />
+                  </Tab>
+                  <Tab eventKey="list" title="Transactions list">
+                    <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} />
+                  </Tab>
+                </Tabs>
+              </Col>
+            </Row>
+          </Container>
         </Col>
         <Col xxl={2} className='mb-5'>
           <CreateTransactionForm

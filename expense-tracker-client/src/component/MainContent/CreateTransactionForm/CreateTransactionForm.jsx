@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, FloatingLabel, Form } from "react-bootstrap";
 
 function CreateTransactionForm(props) {
 
@@ -11,6 +11,7 @@ function CreateTransactionForm(props) {
   });
 
   const handleInputChange = (e) => {
+    console.log(e.target.value);
     setTransaction({...transaction, [e.target.name]: e.target.value})
   }
 
@@ -44,14 +45,30 @@ function CreateTransactionForm(props) {
                 Expense
               </label>
             </div>
-            <Form.Group className="mb-3 text-start">
-              <Form.Label>Transaction</Form.Label>
-              <Form.Control name="description" onChange={handleInputChange} value={transaction.description} type="text" placeholder="ex. Bills" />
-            </Form.Group>
-            <Form.Group className="mb-3 text-start">
-              <Form.Label>Amount</Form.Label>
-              <Form.Control name="amount" onChange={handleInputChange} value={transaction.amount} type="number" placeholder="ex. 500" />
-            </Form.Group>
+            <FloatingLabel
+              label="Transaction"
+              className="mb-3"
+            >
+              <Form.Control
+                name="description"
+                type="text"
+                placeholder="ex. Bills" 
+                onChange={handleInputChange}
+                value={transaction.description}
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              label="Amount in ₱"
+              className="mb-3"
+            >
+              <Form.Control
+                name="amount"
+                type="number"
+                placeholder="ex. 500" 
+                onChange={handleInputChange}
+                value={transaction.amount}
+              />
+            </FloatingLabel>
             <Button variant="primary" type="submit" className="w-100">
               Add
             </Button>

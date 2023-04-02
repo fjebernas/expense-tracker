@@ -1,10 +1,10 @@
 import axios from "axios";
-import { Accordion, Button, ButtonGroup, Container, ListGroup, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Accordion, Container, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { baseUrl } from "../../../data/data";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import CreateBudgetForm from "./CreateBudgetForm";
 
-function BudgetList(props) {
+function BudgetListAndCreateForm(props) {
 
   const handleClick = (budgetName, budgetId) => {
     props.handleBudgetClick(budgetName, budgetId);
@@ -52,4 +52,4 @@ function BudgetList(props) {
   );
 }
 
-export default BudgetList;
+export default BudgetListAndCreateForm;
