@@ -1,5 +1,5 @@
 import { Alert, Col, Container, Row } from "react-bootstrap";
-import { amountFormatter } from "../../../utils/formatter";
+import { amountFormatter, formatDate } from "../../../utils/formatter";
 
 function TransactionCard(props) {
 
@@ -18,7 +18,7 @@ function TransactionCard(props) {
             <p className="fs-4">{ amountFormatter.format(props.transaction.amount) }</p>
           </Col>
           <Col>
-            <p className="text-end">{ props.transaction.createdAt }</p>
+            <p className="text-end">{ formatDate(props.transaction.createdAt) }</p>
           </Col>
         </Row>
       </Container>

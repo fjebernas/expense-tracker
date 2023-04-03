@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Accordion, Container, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Accordion, Col, Container, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { baseUrl } from "../../../data/data";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import CreateBudgetForm from "./CreateBudgetForm";
@@ -16,38 +16,57 @@ function BudgetListAndCreateForm(props) {
         toastSuccess('New budget created');
         props.getAllBudgets();
       })
-      .catch(err => toastError(err.message));
+      .catch(err => {
+        err.response.data.errors.forEach(errMessage => {
+          toastError(errMessage.defaultMessage);
+        });
+      });
   }
 
   return (
     <Container>
-      <h4 className="mb-4 text-info">Budget records</h4>
-      <Accordion>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>
-            <h3 className="fs-6 text-primary">Create new budget</h3>
-          </Accordion.Header>
-          <Accordion.Body>
-            <CreateBudgetForm handleBudgetFormSubmit={handleBudgetFormSubmit} />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-      <p className="text-muted my-3">ALL BUDGETS</p>
-      <ToggleButtonGroup vertical type="radio" name="options" className="w-100">
-        {
-          props.budgets.map(budget => (
-            <ToggleButton
-              id={budget.id + budget.name}
-              key={budget.id + budget.name}
-              value={budget.id}
-              onClick={() => handleClick(budget.name, budget.id)}
-              variant='outline-info'
-            >
-              {budget.name}
-            </ToggleButton>
-          ))
-        }
-      </ToggleButtonGroup>
+      <Row>
+        <Col>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>
+                <h3 className="fs-5 text-info">Create new budget</h3>
+              </Accordion.Header>
+              <Accordion.Body>
+                <CreateBudgetForm handleBudgetFormSubmit={handleBudgetFormSubmit} />
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>
+                <h3 className="fs-5 text-info">Budgets</h3>
+              </Accordion.Header>
+              <Accordion.Body className="p-0 pt-4">
+                <ToggleButtonGroup vertical type="radio" name="options" className="w-100">
+                  {
+                    props.budgets.map(budget => (
+                      <ToggleButton
+                        id={budget.id + budget.name}
+                        key={budget.id + budget.name}
+                        value={budget.id}
+                        onClick={() => handleClick(budget.name, budget.id)}
+                        variant='outline-info'
+                      >
+                        {budget.name}
+                      </ToggleButton>
+                    ))
+                  }
+                </ToggleButtonGroup>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Col>
+      </Row>
     </Container>
   );
 }

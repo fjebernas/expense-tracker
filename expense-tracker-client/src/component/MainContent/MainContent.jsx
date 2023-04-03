@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Col, Container, Row, Tab, Tabs } from "react-bootstrap";
+import { Accordion, Col, Container, ListGroup, Row, Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../data/data";
 import { toastError, toastSuccess } from "../../utils/toast";
 import BudgetBasicInfo from "./BudgetBasicInfo";
 import BudgetListAndCreateForm from "./BudgetList/BudgetListAndCreateForm";
 import BudgetTransactionsList from "./BudgetTransactionsList/BudgetTransactionsList";
 import CreateTransactionForm from "./CreateTransactionForm/CreateTransactionForm";
-import ChartsContainer from "./PieGraphContainer/ChartsContainer";
+import DeleteButton from "./DeleteButton";
+import ChartsContainer from "./ChartsContainer/ChartsContainer";
+import BudgetSummary from "./BudgetSummary/BudgetSummary";
 
 function MainContent() {
 
@@ -81,7 +83,11 @@ function MainContent() {
           getTotalsByBudgetId(currentBudgetId);
           getTransactionsByBudgetId(currentBudgetId);
         })
-        .catch(err => toastError(err.message));
+        .catch(err => {
+          err.response.data.errors.forEach(errMessage => {
+            toastError(errMessage.defaultMessage);
+          });
+        });
     } else if (transactionType === 'expense') {
       await axios.post(`${baseUrl}/budgets/${currentBudgetId}/expenses`, transactionRequest)
         .then(() => {
@@ -94,14 +100,18 @@ function MainContent() {
           getTotalsByBudgetId(currentBudgetId);
           getTransactionsByBudgetId(currentBudgetId);
         })
-        .catch(err => toastError(err.message));
+        .catch(err => {
+          err.response.data.errors.forEach(errMessage => {
+            toastError(errMessage.defaultMessage);
+          });
+        });
     } else {
       toastError('Choose if income or expense');
     }
   }
 
-  const handleDeleteBudgetClick = async () => {
-    await axios.delete(`${baseUrl}/budgets/${currentBudgetId}`)
+  const handleDeleteBudgetClick = async (budgetId) => {
+    await axios.delete(`${baseUrl}/budgets/${budgetId}`)
       .then(() => {
         toastSuccess('Deleted budget');
         getAllBudgets();
@@ -130,14 +140,8 @@ function MainContent() {
               <Col md={{ span: 8, offset: 2 }}>
                 <BudgetBasicInfo budgetName={budgetName} totals={totals} />
               </Col>
-              <Col md={{ span: 2 }} className='d-flex align-items-center'>
-                <Button
-                  disabled={isNaN(currentBudgetId)}
-                  onClick={handleDeleteBudgetClick}
-                  variant="danger"
-                >
-                  Delete budget
-                </Button>
+              <Col md={{ span: 2 }} className='d-flex align-items-center justify-content-center'>
+                
               </Col>
             </Row>
             <Row>
@@ -164,10 +168,39 @@ function MainContent() {
           </Container>
         </Col>
         <Col xxl={2} className='mb-5'>
-          <CreateTransactionForm
-            budgetId={currentBudgetId}
-            handleTransationFormSubmit={handleTransationFormSubmit}
-          />
+          <Container fluid>
+            <Row>
+              <Col>
+                <Accordion defaultActiveKey="0">
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>
+                      <h3 className="fs-5 text-info">Add new transaction</h3>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <CreateTransactionForm
+                        budgetId={currentBudgetId}
+                        handleTransationFormSubmit={handleTransationFormSubmit}
+                      />
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col>
+                <BudgetSummary totals={totals} />
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col>
+                <DeleteButton
+                  id={currentBudgetId}
+                  handleClick={handleDeleteBudgetClick}
+                  title='Delete budget'
+                />
+              </Col>
+            </Row>
+          </Container>
         </Col>
       </Row>
     </Container>

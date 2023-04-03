@@ -3,6 +3,9 @@ package dev.francisbernas.expensetracker.model.transaction;
 import dev.francisbernas.expensetracker.model.Auditable;
 import dev.francisbernas.expensetracker.model.Budget;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -14,9 +17,13 @@ import java.math.BigDecimal;
 @Setter
 @MappedSuperclass
 public abstract class Transaction extends Auditable implements Comparable<Transaction> {
+  @NotNull(message = "Description must not be null")
+  @NotEmpty(message = "Description must not be empty string")
   @Column(nullable = false)
   protected String description;
 
+  @NotNull(message = "Amount must not be null")
+  @DecimalMin(value = "0.00", inclusive = false, message = "Amount must be greater than 0")
   @Column(nullable = false)
   protected BigDecimal amount;
 

@@ -21,7 +21,7 @@ function ChartsContainer(props) {
         <Col xl={4} className='mb-3'>
           <h4 className="mb-3">Expenses</h4>
           {
-            props.incomeTransactions.length > 0 ? <Chart transactions={props.expenseTransactions} /> : <p className="text-muted fst-italic">No data</p>
+            props.expenseTransactions.length > 0 ? <Chart transactions={props.expenseTransactions} /> : <p className="text-muted fst-italic">No data</p>
           }
         </Col>
       </Row>

@@ -6,6 +6,7 @@ import dev.francisbernas.expensetracker.model.transaction.Income;
 import dev.francisbernas.expensetracker.model.transaction.Transaction;
 import dev.francisbernas.expensetracker.repository.BudgetRepository;
 import dev.francisbernas.expensetracker.repository.IncomeRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class IncomeController {
   }
 
   @PostMapping("/budgets/{budgetId}/incomes")
-  public Income createIncome(@PathVariable Long budgetId, @RequestBody Income incomeRequest) throws ResourceNotFoundException {
+  public Income createIncome(@PathVariable Long budgetId, @Valid @RequestBody Income incomeRequest) throws ResourceNotFoundException {
     return budgetRepository.findById(budgetId).map(budget -> {
       incomeRequest.setBudget(budget);
       return incomeRepository.save(incomeRequest);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, FloatingLabel, Form } from "react-bootstrap";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 function CreateTransactionForm(props) {
 
@@ -11,7 +11,6 @@ function CreateTransactionForm(props) {
   });
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     setTransaction({...transaction, [e.target.name]: e.target.value})
   }
 
@@ -22,8 +21,6 @@ function CreateTransactionForm(props) {
 
   return (
     <>
-      <h4 className="mb-4 text-info">Add new transaction</h4>
-      <Card body className="w-100">
         <fieldset disabled={isNaN(props.budgetId)}>
           <Form onSubmit={handleSubmit}>
             <div className="btn-group mb-3 w-100" role="group">
@@ -74,7 +71,6 @@ function CreateTransactionForm(props) {
             </Button>
           </Form>
         </fieldset>
-      </Card>
     </>
   );
 }

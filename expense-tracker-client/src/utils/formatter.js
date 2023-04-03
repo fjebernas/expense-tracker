@@ -7,4 +7,9 @@ const amountFormatter = new Intl.NumberFormat('en-US', {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export { amountFormatter };
+const formatDate = (rawDateString) => {
+  let date = new Date( Date.parse(rawDateString) );
+  return `${date.toLocaleString()}`;
+}
+
+export { amountFormatter, formatDate };

@@ -1,6 +1,5 @@
 package dev.francisbernas.expensetracker.model;
 
-import dev.francisbernas.expensetracker.model.transaction.Transaction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,8 +20,8 @@ public class Budget extends Auditable implements Comparable<Budget> {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @NotNull
-  @NotEmpty
+  @NotNull(message = "Budget name must not be null")
+  @NotEmpty(message = "Budget name must not be empty string")
   @Column(nullable = false)
   private String name;
 
