@@ -3,18 +3,14 @@ package dev.francisbernas.expensetracker.controller;
 import dev.francisbernas.expensetracker.dto.TransactionDto;
 import dev.francisbernas.expensetracker.exception.ResourceNotFoundException;
 import dev.francisbernas.expensetracker.model.Budget;
-import dev.francisbernas.expensetracker.model.Total;
 import dev.francisbernas.expensetracker.model.transaction.Transaction;
 import dev.francisbernas.expensetracker.repository.BudgetRepository;
 import dev.francisbernas.expensetracker.repository.ExpenseRepository;
-import dev.francisbernas.expensetracker.repository.TransactionRepository;
 import dev.francisbernas.expensetracker.repository.IncomeRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin
@@ -48,31 +44,5 @@ public class TransactionsController {
       transactionDtos.sort(Collections.reverseOrder());
       return transactionDtos;
     }).orElseThrow(() -> new ResourceNotFoundException(Budget.class, budgetId));
-  }
-
-  @GetMapping("/budgets/{budgetId}/totals")
-  public List<Total> getTotalsByBudgetId(@PathVariable Long budgetId) {
-    List<Transaction> incomeTransactions =  getAllTransactionsByBudgetIdFrom(incomeRepository, budgetId);
-    List<Transaction> expenseTransactions = getAllTransactionsByBudgetIdFrom(expenseRepository, budgetId);
-
-    List<Total> totals = new ArrayList<>();
-    totals.add(new Total("income", getTotalAmountOfTransactions(incomeTransactions)));
-    totals.add(new Total("expense", getTotalAmountOfTransactions(expenseTransactions)));
-
-    return totals;
-  }
-
-  private BigDecimal getTotalAmountOfTransactions(List<Transaction> transactions) {
-    return transactions
-            .stream()
-            .map(Transaction::getAmount)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-  }
-
-  private List<Transaction> getAllTransactionsByBudgetIdFrom(TransactionRepository transactionRepository, Long budgetId) {
-    return budgetRepository
-            .findById(budgetId)
-            .map(budget -> transactionRepository.findByBudgetIdEquals(budget.getId()))
-            .orElseThrow(() -> new ResourceNotFoundException(Budget.class, budgetId));
   }
 }

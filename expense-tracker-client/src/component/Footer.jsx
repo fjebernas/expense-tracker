@@ -8,7 +8,14 @@ function Footer() {
               <span className='text-muted'>
                 Expense Tracker by
               </span>
-              <a href="#home" className="text-decoration-none text-primary" target="_blank" rel="noreferrer">&nbsp;Francis Bernas</a>
+              <a
+                href="https://github.com/fjebernas/expense-tracker"
+                className="text-decoration-none text-info"
+                target="_blank"
+                rel="noreferrer"
+              >
+                &nbsp;Francis Bernas
+              </a>
             </h5>
           </div>
         </div>

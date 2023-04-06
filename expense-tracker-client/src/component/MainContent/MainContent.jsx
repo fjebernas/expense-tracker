@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Accordion, Col, Container, ListGroup, Row, Tab, Tabs } from "react-bootstrap";
+import { Accordion, Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../data/data";
 import { toastError, toastSuccess } from "../../utils/toast";
 import BudgetBasicInfo from "./BudgetBasicInfo";
@@ -39,7 +39,7 @@ function MainContent() {
 
   const getTotalsByBudgetId = async (budgetId) => {
     await axios.get(`${baseUrl}/budgets/${budgetId}/totals`)
-      .then((res) => setTotals(res.data))
+      .then((res) => setTotals(res.data.totals))
       .catch(err => toastError(err.message));
   }
 

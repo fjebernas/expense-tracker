@@ -7,9 +7,20 @@ import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootswatch/dist/journal/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../node_modules/bootstrap/dist/js/bootstrap';
-import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend, Tooltip, Colors, CategoryScale, LinearScale, PointElement, LineElement, Title, BarElement } from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Colors,
+  BarElement
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
