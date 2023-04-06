@@ -1,4 +1,4 @@
-package dev.francisbernas.expensetracker.model;
+package dev.francisbernas.expensetracker.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class Total {
+public class TotalDto {
   private String description;
 
   private BigDecimal amount;
