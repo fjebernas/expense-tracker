@@ -1,4 +1,4 @@
-import { Bar, Chart, Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 function AnalyticsChart(props) {
 

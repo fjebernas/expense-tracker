@@ -35,4 +35,9 @@ public class IncomeController {
       return incomeRepository.save(incomeRequest);
     }).orElseThrow(() -> new ResourceNotFoundException(Budget.class, budgetId));
   }
+
+  @DeleteMapping("/incomes/{incomeId}")
+  public void deleteIncome(@PathVariable Long incomeId) {
+    incomeRepository.deleteById(incomeId);
+  }
 }

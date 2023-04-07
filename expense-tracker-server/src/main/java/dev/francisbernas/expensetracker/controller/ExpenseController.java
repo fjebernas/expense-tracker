@@ -35,4 +35,9 @@ public class ExpenseController {
       return expenseRepository.save(expenseRequest);
     }).orElseThrow(() -> new ResourceNotFoundException(Budget.class, budgetId));
   }
+
+  @DeleteMapping("/expenses/{expenseId}")
+  public void deleteIncome(@PathVariable Long expenseId) {
+    expenseRepository.deleteById(expenseId);
+  }
 }

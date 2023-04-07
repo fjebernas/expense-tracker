@@ -6,8 +6,8 @@ import CreateBudgetForm from "./CreateBudgetForm";
 
 function BudgetListAndCreateForm(props) {
 
-  const handleClick = (budgetName, budgetId) => {
-    props.handleBudgetClick(budgetName, budgetId);
+  const handleClick = (budget) => {
+    props.handleBudgetClick(budget);
   }
 
   const handleBudgetFormSubmit = async (budgetRequest) => {
@@ -49,17 +49,18 @@ function BudgetListAndCreateForm(props) {
               <Accordion.Body className="p-0 pt-4">
                 <ToggleButtonGroup vertical type="radio" name="options" className="w-100">
                   {
+                    props.budgets.length > 0 ?
                     props.budgets.map(budget => (
                       <ToggleButton
                         id={budget.id + budget.name}
                         key={budget.id + budget.name}
                         value={budget.id}
-                        onClick={() => handleClick(budget.name, budget.id)}
+                        onClick={() => handleClick(budget)}
                         variant='outline-info'
                       >
                         {budget.name}
                       </ToggleButton>
-                    ))
+                    )) : <p className="text-muted fst-italic ms-4">No budgets</p>
                   }
                 </ToggleButtonGroup>
               </Accordion.Body>

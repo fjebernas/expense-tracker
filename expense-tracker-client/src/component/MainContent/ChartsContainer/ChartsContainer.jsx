@@ -12,7 +12,7 @@ function ChartsContainer(props) {
   }
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 text-center">
       <Row className="mt-4">
         <Col xl={4} className='mb-3'>
           <h4 className="mb-3">Total Income : Total Expense</h4>

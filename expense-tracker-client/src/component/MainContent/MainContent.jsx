@@ -15,17 +15,15 @@ function MainContent() {
 
   const [budgets, setBudgets] = useState([]);
 
-  const [budgetName, setBudgetName] = useState('');
-
   const [totals, setTotals] = useState({});
 
   const [incomeTransactions, setIncomeTransactions] = useState([]);
 
   const [expenseTransactions, setExpenseTransactions] = useState([]);
 
-  const [currentBudgetId, setCurrentBudgetId] = useState(NaN);
-
   const [transactionDtosOfBudget, setTransactionDtosOfBudget] = useState([]);
+
+  const [currentBudget, setCurrentBudget] = useState({});
   
   useEffect(() => {
     getAllBudgets();
@@ -61,44 +59,43 @@ function MainContent() {
     .catch(err => toastError(err.message));
   }
 
-  const handleBudgetClick = (budgetName, budgetId) => {
-    setBudgetName(budgetName);
-    getTotalsByBudgetId(budgetId);
-    getIncomeTransactionsByBudgetId(budgetId);
-    getExpenseTransactionsByBudgetId(budgetId);
-    setCurrentBudgetId(budgetId);
-    getTransactionsByBudgetId(budgetId);
+  const handleBudgetClick = (budget) => {
+    getTotalsByBudgetId(budget.id);
+    getIncomeTransactionsByBudgetId(budget.id);
+    getExpenseTransactionsByBudgetId(budget.id);
+    getTransactionsByBudgetId(budget.id);
+    setCurrentBudget(budget);
   }
 
-  const handleTransationFormSubmit = async (transactionType, transactionRequest, setTransaction) => {
-    if (transactionType === 'income') {
-      await axios.post(`${baseUrl}/budgets/${currentBudgetId}/incomes`, transactionRequest)
+  const handleTransationFormSubmit = async (category, transactionRequest, setTransaction) => {
+    if (category === 'income') {
+      await axios.post(`${baseUrl}/budgets/${currentBudget.id}/incomes`, transactionRequest)
         .then(() => {
           toastSuccess('Income transaction added');
           setTransaction({
             description: '',
             amount: ''
           });
-          getIncomeTransactionsByBudgetId(currentBudgetId);
-          getTotalsByBudgetId(currentBudgetId);
-          getTransactionsByBudgetId(currentBudgetId);
+          getIncomeTransactionsByBudgetId(currentBudget.id);
+          getTotalsByBudgetId(currentBudget.id);
+          getTransactionsByBudgetId(currentBudget.id);
         })
         .catch(err => {
           err.response.data.errors.forEach(errMessage => {
             toastError(errMessage.defaultMessage);
           });
         });
-    } else if (transactionType === 'expense') {
-      await axios.post(`${baseUrl}/budgets/${currentBudgetId}/expenses`, transactionRequest)
+    } else if (category === 'expense') {
+      await axios.post(`${baseUrl}/budgets/${currentBudget.id}/expenses`, transactionRequest)
         .then(() => {
           toastSuccess('Expense transaction added');
           setTransaction({
             description: '',
             amount: ''
           });
-          getExpenseTransactionsByBudgetId(currentBudgetId);
-          getTotalsByBudgetId(currentBudgetId);
-          getTransactionsByBudgetId(currentBudgetId);
+          getExpenseTransactionsByBudgetId(currentBudget.id);
+          getTotalsByBudgetId(currentBudget.id);
+          getTransactionsByBudgetId(currentBudget.id);
         })
         .catch(err => {
           err.response.data.errors.forEach(errMessage => {
@@ -118,10 +115,32 @@ function MainContent() {
         setIncomeTransactions([]);
         setExpenseTransactions([]);
         setTotals({});
-        setCurrentBudgetId(NaN);
-        setBudgetName('')
       })
       .catch(err => toastError(err.message));
+  }
+
+  const handleDeleteTransactionClick = async (category, transactionId) => {
+    if (category === 'income') {
+      await axios.delete(`${baseUrl}/incomes/${transactionId}`)
+        .then(() => {
+          toastSuccess('Income transaction deleted');
+          getTransactionsByBudgetId(currentBudget.id);
+          getIncomeTransactionsByBudgetId(currentBudget.id);
+          getTotalsByBudgetId(currentBudget.id);
+        })
+        .catch(err => toastError(err.message));
+    } else if (category === 'expense') {
+      await axios.delete(`${baseUrl}/expenses/${transactionId}`)
+        .then(() => {
+          toastSuccess('Expense transaction deleted');
+          getTransactionsByBudgetId(currentBudget.id);
+          getExpenseTransactionsByBudgetId(currentBudget.id);
+          getTotalsByBudgetId(currentBudget.id);
+        })
+        .catch(err => toastError(err.message));
+    } else {
+      toastError('Transaction must be income or expense');
+    }
   }
 
   return (
@@ -138,10 +157,7 @@ function MainContent() {
           <Container fluid>
             <Row>
               <Col md={{ span: 8, offset: 2 }}>
-                <BudgetBasicInfo budgetName={budgetName} totals={totals} />
-              </Col>
-              <Col md={{ span: 2 }} className='d-flex align-items-center justify-content-center'>
-                
+                <BudgetBasicInfo budgetName={currentBudget.name} totals={totals} />
               </Col>
             </Row>
             <Row>
@@ -160,7 +176,7 @@ function MainContent() {
                     />
                   </Tab>
                   <Tab eventKey="list" title="Transactions list">
-                    <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} />
+                    <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} handleDeleteTransactionClick={handleDeleteTransactionClick} />
                   </Tab>
                 </Tabs>
               </Col>
@@ -178,7 +194,7 @@ function MainContent() {
                     </Accordion.Header>
                     <Accordion.Body>
                       <CreateTransactionForm
-                        budgetId={currentBudgetId}
+                        budgetId={currentBudget.id}
                         handleTransationFormSubmit={handleTransationFormSubmit}
                       />
                     </Accordion.Body>
@@ -194,7 +210,7 @@ function MainContent() {
             <Row className="mt-4">
               <Col>
                 <DeleteButton
-                  id={currentBudgetId}
+                  id={currentBudget.id}
                   handleClick={handleDeleteBudgetClick}
                   title='Delete budget'
                 />

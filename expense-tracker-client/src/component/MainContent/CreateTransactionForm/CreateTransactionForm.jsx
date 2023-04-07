@@ -3,7 +3,7 @@ import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 function CreateTransactionForm(props) {
 
-  const [transactionType, setTransactionType] = useState(null);
+  const [category, setCategory] = useState(null);
 
   const [transaction, setTransaction] = useState({
     description: '',
@@ -16,7 +16,7 @@ function CreateTransactionForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleTransationFormSubmit(transactionType, transaction, setTransaction);
+    props.handleTransationFormSubmit(category, transaction, setTransaction);
   }
 
   return (
@@ -27,7 +27,7 @@ function CreateTransactionForm(props) {
               <input type="radio" className="btn-check" name="options-outlined" id='income' />
               <label
                 className="btn btn-outline-success"
-                onClick={() => {setTransactionType('income')}}
+                onClick={() => {setCategory('income')}}
                 htmlFor='income'
               >
                 Income
@@ -36,7 +36,7 @@ function CreateTransactionForm(props) {
               <input type="radio" className="btn-check" name="options-outlined" id='expense' />
               <label
                 className="btn btn-outline-danger"
-                onClick={() => {setTransactionType('expense')}}
+                onClick={() => {setCategory('expense')}}
                 htmlFor='expense'
               >
                 Expense

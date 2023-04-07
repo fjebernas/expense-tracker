@@ -15,7 +15,7 @@ function DeleteButton(props) {
       if (result.isConfirmed) {
         props.handleClick(props.id);
       }
-    })
+    });
   }
 
   return (

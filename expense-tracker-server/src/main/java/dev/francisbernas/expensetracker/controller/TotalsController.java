@@ -32,6 +32,23 @@ public class TotalsController {
     this.expenseRepository = expenseRepository;
   }
 
+  @GetMapping("/totals/remaining-balance")
+  public BigDecimal getTotalRemainingBalanceOfAllBudgets() {
+    List<TotalsDto> totalsDtos = getAllTotalDtos();
+
+    BigDecimal totalIncome = totalsDtos
+            .stream()
+            .map(totalsDto -> totalsDto.getTotals().getIncome())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    BigDecimal totalExpense = totalsDtos
+            .stream()
+            .map(totalsDto -> totalsDto.getTotals().getExpense())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    return totalIncome.subtract(totalExpense);
+  }
+
   @GetMapping("/totals/highest")
   public Optional<TotalsDto> getTotalDtoWithHighestSpecifiedCategory(@RequestParam String category) {
     List<TotalsDto> totalsDtos = getAllTotalDtos();
