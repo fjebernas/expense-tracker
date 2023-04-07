@@ -5,10 +5,10 @@ import { isObjectEmpty } from "../../../utils/checker";
 function BudgetSummary(props) {
 
   return (
-    <Accordion>
+    <Accordion defaultActiveKey="0">
       <Accordion.Item eventKey="0">
         <Accordion.Header>
-          <h2 className="fs-5 text-info">Budget summary</h2>
+          <h2 className="fs-5 text-info">{props.title}</h2>
         </Accordion.Header>
         <Accordion.Body className="pb-1">
           <ListGroup variant="flush text-start">

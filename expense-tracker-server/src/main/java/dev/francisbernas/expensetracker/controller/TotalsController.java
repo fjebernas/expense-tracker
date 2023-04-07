@@ -13,21 +13,41 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
 @RequestMapping("${serverBaseUrl}")
-public class TotalController {
+public class TotalsController {
 
   private final BudgetRepository budgetRepository;
   private final IncomeRepository incomeRepository;
   private final ExpenseRepository expenseRepository;
 
-  public TotalController(BudgetRepository budgetRepository, IncomeRepository incomeRepository, ExpenseRepository expenseRepository) {
+  public TotalsController(BudgetRepository budgetRepository, IncomeRepository incomeRepository, ExpenseRepository expenseRepository) {
     this.budgetRepository = budgetRepository;
     this.incomeRepository = incomeRepository;
     this.expenseRepository = expenseRepository;
+  }
+
+  @GetMapping("/totals/highest")
+  public Optional<TotalsDto> getTotalDtoWithHighestSpecifiedCategory(@RequestParam String category) {
+    List<TotalsDto> totalsDtos = getAllTotalDtos();
+
+    if (category.equalsIgnoreCase("income")) {
+      return totalsDtos.stream().max(
+              Comparator.comparing(t -> t.getTotals().getIncome())
+      );
+    }
+    if (category.equalsIgnoreCase("expense")) {
+      return totalsDtos.stream().max(
+              Comparator.comparing(t -> t.getTotals().getExpense())
+      );
+    }
+
+    return Optional.empty();
   }
 
   @GetMapping("/totals")

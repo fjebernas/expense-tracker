@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @MappedSuperclass
 public abstract class Transaction extends Auditable implements Comparable<Transaction> {
   @NotNull(message = "Description must not be null")
-  @NotEmpty(message = "Description must not be empty string")
+  @NotEmpty(message = "Description must not be an empty string")
   @Column(nullable = false)
   protected String description;
 

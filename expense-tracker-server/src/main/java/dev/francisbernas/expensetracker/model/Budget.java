@@ -21,7 +21,7 @@ public class Budget extends Auditable implements Comparable<Budget> {
   private Long id;
 
   @NotNull(message = "Budget name must not be null")
-  @NotEmpty(message = "Budget name must not be empty string")
+  @NotEmpty(message = "Budget name must not be an empty string")
   @Column(nullable = false)
   private String name;
 

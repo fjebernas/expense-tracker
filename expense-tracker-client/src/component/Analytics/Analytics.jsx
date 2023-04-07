@@ -3,19 +3,39 @@ import AnalyticsChart from "./AnalyticsChart";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../data/data";
+import BudgetSummary from "../MainContent/BudgetSummary/BudgetSummary";
+import { isObjectEmpty } from "../../utils/checker";
 
 function Analytics() {
 
   const [totalDtos, setTotalDtos] = useState([]);
 
+  const [totalsDtoWithHighestIncome, setTotalsDtoWithHighestIncome] = useState({});
+
+  const [totalsDtoWithHighestExpense, setTotalsDtoWithHighestExpense] = useState({});
+
   useEffect(() => {
     getAllTotalDtos();
+    getTotalsDtoWithHighestIncome();
+    getTotalsDtoWithHighestExpense();
   }, []);
 
   const getAllTotalDtos = async () => {
     await axios.get(`${baseUrl}/totals`)
-    .then(res => setTotalDtos(res.data))
-    .catch();
+      .then(res => setTotalDtos(res.data))
+      .catch();
+  }
+
+  const getTotalsDtoWithHighestIncome = async () => {
+    await axios.get(`${baseUrl}/totals/highest?category=income`)
+      .then(res => setTotalsDtoWithHighestIncome(res.data))
+      .catch();
+  }
+
+  const getTotalsDtoWithHighestExpense = async () => {
+    await axios.get(`${baseUrl}/totals/highest?category=expense`)
+      .then(res => setTotalsDtoWithHighestExpense(res.data))
+      .catch();
   }
 
   return (
@@ -27,10 +47,26 @@ function Analytics() {
         </Col>
       </Row>
       <Row className="mt-3">
-        <Col className="d-flex justify-content-center">
-          <div className="position-relative d-flex justify-content-center" style={{ width: '70vw', height: '60vh' }}>
-            <AnalyticsChart totalDtos={totalDtos} />
-          </div>
+        <Col xxl={{ span:'8', offset:'1' }}>
+          <AnalyticsChart totalDtos={totalDtos} />
+        </Col>
+        <Col xxl={{ span:'3', }}>
+          <Container>
+            <Row>
+              <Col>
+                {
+                  !isObjectEmpty(totalsDtoWithHighestIncome) && <BudgetSummary title={`Highest by income: ${totalsDtoWithHighestIncome.budget.name}`} totals={totalsDtoWithHighestIncome.totals} />
+                }
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col>
+                {
+                  !isObjectEmpty(totalsDtoWithHighestExpense) && <BudgetSummary title={`Highest by expense: ${totalsDtoWithHighestExpense.budget.name}`} totals={totalsDtoWithHighestExpense.totals} />
+                }
+              </Col>
+            </Row>
+          </Container>
         </Col>
       </Row>
     </Container>

@@ -1,4 +1,4 @@
-import { Bar } from "react-chartjs-2";
+import { Bar, Chart, Line } from "react-chartjs-2";
 
 function AnalyticsChart(props) {
 
@@ -7,45 +7,41 @@ function AnalyticsChart(props) {
   const expenses = props.totalDtos.map(totalDto => totalDto.totals.expense);
   const remainingBalances = props.totalDtos.map(totalDto => totalDto.totals.income - totalDto.totals.expense);
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: false,
-        text: 'Chart.js Line Chart',
-      },
-    },
-  };
+  const remainingBalanceRGBA = 'rgba(51, 102, 153, 0.5)';
+  const incomeRGBA = 'rgba(34, 178, 76, 0.5)';
+  const expenseRGBA = 'rgba(245, 122, 0, 0.5)';
   
   const data = {
     labels,
     datasets: [
       {
-        label: 'Incomes',
-        data: incomes,
-        borderColor: 'rgba(53, 162, 235, 0.5)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        pointStyle: 'circle',
-        pointRadius: 10,
-        pointHoverRadius: 15
-      },
-      {
-        label: 'Expenses',
-        data: expenses,
-        borderColor: 'rgba(255, 99, 132, 0.5)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        pointStyle: 'circle',
-        pointRadius: 10,
-        pointHoverRadius: 15
-      },
-      {
+        type: 'line',
         label: 'Remaining balance',
         data: remainingBalances,
-        borderColor: 'rgba(100, 255, 132, 0.5)',
-        backgroundColor: 'rgba(100, 255, 132, 0.5',
+        borderColor: remainingBalanceRGBA,
+        backgroundColor: remainingBalanceRGBA,
+        pointStyle: 'circle',
+        pointRadius: 8,
+        pointHoverRadius: 12,
+        fill: false,
+        borderWidth: 2,
+      },
+      {
+        type: 'bar',
+        label: 'Total income',
+        data: incomes,
+        borderColor: incomeRGBA,
+        backgroundColor: incomeRGBA,
+        pointStyle: 'circle',
+        pointRadius: 10,
+        pointHoverRadius: 15
+      },
+      {
+        type: 'bar',
+        label: 'Total expense',
+        data: expenses,
+        borderColor: expenseRGBA,
+        backgroundColor: expenseRGBA,
         pointStyle: 'circle',
         pointRadius: 10,
         pointHoverRadius: 15
@@ -54,7 +50,7 @@ function AnalyticsChart(props) {
   };
 
   return (
-    <Bar options={options} data={data} />
+    <Line data={data} />
   );
 }
 

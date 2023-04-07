@@ -188,7 +188,7 @@ function MainContent() {
             </Row>
             <Row className="mt-4">
               <Col>
-                <BudgetSummary totals={totals} />
+                <BudgetSummary title='Budget Summary' totals={totals} />
               </Col>
             </Row>
             <Row className="mt-4">
