@@ -1,9 +1,9 @@
-import { Flip, ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 
 function Toasts() {
   return (
     <ToastContainer
-      position="top-right"
+      position="top-center"
       autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
@@ -13,7 +13,7 @@ function Toasts() {
       draggable
       pauseOnHover
       theme="colored"
-      transition={Flip}
+      transition={Bounce}
     />
   );
 }

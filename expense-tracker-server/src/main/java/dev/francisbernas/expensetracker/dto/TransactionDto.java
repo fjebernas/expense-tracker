@@ -3,6 +3,8 @@ package dev.francisbernas.expensetracker.dto;
 import dev.francisbernas.expensetracker.model.transaction.Transaction;
 import lombok.*;
 
+import java.util.Comparator;
+
 @Getter
 @Setter
 @AllArgsConstructor

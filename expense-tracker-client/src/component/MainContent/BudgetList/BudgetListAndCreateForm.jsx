@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Accordion, Col, Container, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { baseUrl } from "../../../data/data";
-import { toastError, toastSuccess } from "../../../utils/toast";
+import { toastSuccess, toastWarning } from "../../../utils/toast";
 import CreateBudgetForm from "./CreateBudgetForm";
 
 function BudgetListAndCreateForm(props) {
@@ -18,7 +18,7 @@ function BudgetListAndCreateForm(props) {
       })
       .catch(err => {
         err.response.data.errors.forEach(errMessage => {
-          toastError(errMessage.defaultMessage);
+          toastWarning(errMessage.defaultMessage);
         });
       });
   }

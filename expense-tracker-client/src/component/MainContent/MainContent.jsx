@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Accordion, Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { baseUrl } from "../../data/data";
-import { toastError, toastSuccess } from "../../utils/toast";
+import { toastError, toastInfo, toastSuccess, toastWarning } from "../../utils/toast";
 import BudgetBasicInfo from "./BudgetBasicInfo";
 import BudgetListAndCreateForm from "./BudgetList/BudgetListAndCreateForm";
 import BudgetTransactionsList from "./BudgetTransactionsList/BudgetTransactionsList";
@@ -82,7 +82,7 @@ function MainContent() {
         })
         .catch(err => {
           err.response.data.errors.forEach(errMessage => {
-            toastError(errMessage.defaultMessage);
+            toastWarning(errMessage.defaultMessage);
           });
         });
     } else if (category === 'expense') {
@@ -99,18 +99,18 @@ function MainContent() {
         })
         .catch(err => {
           err.response.data.errors.forEach(errMessage => {
-            toastError(errMessage.defaultMessage);
+            toastWarning(errMessage.defaultMessage);
           });
         });
     } else {
-      toastError('Choose if income or expense');
+      toastWarning('Choose if income or expense');
     }
   }
 
   const handleDeleteBudgetClick = async (budgetId) => {
     await axios.delete(`${baseUrl}/budgets/${budgetId}`)
       .then(() => {
-        toastSuccess('Deleted budget');
+        toastInfo('Deleted budget');
         getAllBudgets();
         setIncomeTransactions([]);
         setExpenseTransactions([]);
@@ -123,7 +123,7 @@ function MainContent() {
     if (category === 'income') {
       await axios.delete(`${baseUrl}/incomes/${transactionId}`)
         .then(() => {
-          toastSuccess('Income transaction deleted');
+          toastInfo('Income transaction deleted');
           getTransactionsByBudgetId(currentBudget.id);
           getIncomeTransactionsByBudgetId(currentBudget.id);
           getTotalsByBudgetId(currentBudget.id);
@@ -132,7 +132,7 @@ function MainContent() {
     } else if (category === 'expense') {
       await axios.delete(`${baseUrl}/expenses/${transactionId}`)
         .then(() => {
-          toastSuccess('Expense transaction deleted');
+          toastInfo('Expense transaction deleted');
           getTransactionsByBudgetId(currentBudget.id);
           getExpenseTransactionsByBudgetId(currentBudget.id);
           getTotalsByBudgetId(currentBudget.id);
@@ -176,7 +176,10 @@ function MainContent() {
                     />
                   </Tab>
                   <Tab eventKey="list" title="Transactions list">
-                    <BudgetTransactionsList transactionDtos={transactionDtosOfBudget} handleDeleteTransactionClick={handleDeleteTransactionClick} />
+                    <BudgetTransactionsList
+                      transactionDtos={transactionDtosOfBudget} 
+                      handleDeleteTransactionClick={handleDeleteTransactionClick} 
+                    />
                   </Tab>
                 </Tabs>
               </Col>
